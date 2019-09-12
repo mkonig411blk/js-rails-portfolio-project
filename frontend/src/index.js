@@ -8,10 +8,10 @@ function putGiftsOnDom(giftArray){
     giftArray.forEach(gift => {
         giftCollection.innerHTML += `<div class="card">
           <h2>${gift.title} ($${gift.price})</h2>
-          <h4>${gift.category}</h4>
+          <h4 class="gift-cat">${gift.category}</h4>
+          <a href=${gift.link} target="_blank"><img src=${gift.image} class="gift-image" /></a>
           <p>${gift.description}<p>
-          <a href=${gift.link}><img src=${gift.image} class="gift-image" /></a>
-          <button data-gift-id=${gift.id} class="like-btn">Like <3</button>
+          <button data-gift-id=${gift.id} class="like-btn">♡</button>
         </div>`
     })
 }
