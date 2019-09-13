@@ -5,9 +5,11 @@ const giftCollection = document.querySelector('#gift-collection')
 const likeButton = document.querySelector('.like-btn')
 const signupForm = document.querySelector('#signup-form')
 const signupInputs = document.querySelectorAll(".signup-input")
+let currentUser
 
 // JS file was required at bottom of HTML file so no need for DOMContentLoaded
 function putGiftsOnDom(giftArray){
+    giftCollection.innerHTML = "<h2>All Gift Ideas</h2>"
     giftArray.forEach(gift => {
         giftCollection.innerHTML += `<div class="card">
           <h2>${gift.title} ($${gift.price})</h2>
@@ -34,22 +36,28 @@ signupForm.addEventListener('submit', function(e){
             Accept: "application/json"
         },
         body: JSON.stringify({
-            name: signupInputs[0].value,
-            email: signupInputs[1].value,
-            password: signupInputs[2].value
+            user: {
+                name: signupInputs[0].value,
+                email: signupInputs[1].value,
+                password: signupInputs[2].value
+            }
         })
     })
     .then(res => res.json())
     .then(function(object){
-        loggedInUser()
+        if (object.message) {
+            alert(object.message)
+        } else {
+        loggedInUser(object)
         }
+        end }
     )
 })
 
-function loggedInUser(){
+function loggedInUser(object){
+    currentUser = object
     signupForm.style.display = 'none'
-    // welcome.innerText = `Welcome back ${name}!`
-    // how do I know current user??
+    welcome.innerText = `<h3>Welcome back, ${currentUser.name}!</h3>`
     fetchGifts()
 }
 
