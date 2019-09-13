@@ -1,7 +1,10 @@
 const BASE_URL = "http://localhost:3000"
 const GIFTS_URL = `${BASE_URL}/gifts`
+const USERS_URL = `${BASE_URL}/users`
 const giftCollection = document.querySelector('#gift-collection')
 const likeButton = document.querySelector('.like-btn')
+const signupForm = document.querySelector('#signup-form')
+const signupInputs = document.querySelectorAll(".signup-input")
 
 // JS file was required at bottom of HTML file so no need for DOMContentLoaded
 function putGiftsOnDom(giftArray){
@@ -20,6 +23,34 @@ function fetchGifts(){
     fetch(GIFTS_URL)
     .then(res => res.json())
     .then(gifts => putGiftsOnDom(gifts))
+}
+
+signupForm.addEventListener('submit', function(e){
+    e.preventDefault()
+    fetch(USERS_URL, {
+        method: "POST",
+        headers: {
+            "Content-Type": "application/json",
+            Accept: "application/json"
+        },
+        body: JSON.stringify({
+            name: signupInputs[0].value,
+            email: signupInputs[1].value,
+            password: signupInputs[2].value
+        })
+    })
+    .then(res => res.json())
+    .then(function(object){
+        loggedInUser()
+        }
+    )
+})
+
+function loggedInUser(){
+    signupForm.style.display = 'none'
+    // welcome.innerText = `Welcome back ${name}!`
+    // how do I know current user??
+    fetchGifts()
 }
 
 fetchGifts()
