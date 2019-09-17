@@ -9,12 +9,12 @@ const likeButton = document.querySelector('.like-btn')
 const signupForm = document.querySelector('#signup-form')
 const signupInputs = document.querySelectorAll(".signup-input")
 const header = document.querySelector('.header-banner')
-const favHeader = document.querySelector ('.header-fav')
 let currentUser
 
 
 function putGiftsOnDom(giftArray){
-    giftCollection.innerHTML = `<h2 class="subheader">All Gift Ideas</h2>`
+    giftCollection.innerHTML = `<h4 class="favorites-link">View only my Favorites</h4>
+                                <h2 class="subheader">All Gift Ideas</h2>`
     giftArray.forEach(gift => {
         giftCollection.innerHTML += `<div class="card">
           <h2>${gift.title} ($${gift.price})</h2>
@@ -27,7 +27,8 @@ function putGiftsOnDom(giftArray){
 }
 
 function putFavoritesOnDom(favArray){
-    favCollection.innerHTML = `<h2 class="subheader">My Favorites</h2>`
+    favCollection.innerHTML = `<h4 class="back-link">Back to all Gifts</h4>
+                               <h2 class="subheader">My Favorites</h2>`
     favArray.forEach(favorite => {
         favCollection.innerHTML += `<div class="card">
           <h2>${favorite.gift.title} ($${favorite.gift.price})</h2>
@@ -78,11 +79,18 @@ signupForm.addEventListener('submit', function(e){
     )
 })
 
-favHeader.addEventListener('click', function(e) {
+giftCollection.addEventListener('click', function(e) {
     if (event.target.className == "favorites-link") {
         giftCollection.style.display = 'none';
-        event.target.style.display = 'none';
         fetchFavorites();
+        favCollection.style.display = 'initial';
+    }
+})
+
+favCollection.addEventListener('click', function(e) {
+    if (event.target.className == "back-link") {
+        favCollection.style.display = 'none';
+        giftCollection.style.display = 'initial';
     }
 })
 
@@ -90,7 +98,6 @@ function loggedInUser(object){
     currentUser = object
     signupForm.style.display = 'none'
     welcome.innerHTML = `<h4>Hello, <i>${currentUser.email}</i> !</h4>`
-    favHeader.innerHTML = `<h4 class="favorites-link">View only my Favorites</h4>`
     fetchGifts()
 }
 
