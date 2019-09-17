@@ -34,7 +34,7 @@ function putFavoritesOnDom(favArray){
           <h4 class="gift-cat">${favorite.gift.category}</h4>
           <a href=${favorite.gift.link} target="_blank"><img src=${favorite.gift.image} class="gift-image" /></a>
           <p>${favorite.gift.description}<p>
-          <button data-gift-id=${favorite.gift.id} class="like-btn">♡</button>
+          <button data-gift-id=${favorite.gift.id} class="like-btn" style="color:red;">♡</button>
         </div>`
     })
 }
@@ -61,9 +61,8 @@ signupForm.addEventListener('submit', function(e){
         },
         body: JSON.stringify({
             user: {
-                name: signupInputs[0].value,
-                email: signupInputs[1].value,
-                password: signupInputs[2].value
+                email: signupInputs[0].value,
+                password: signupInputs[1].value
             }
         })
     })
@@ -79,7 +78,7 @@ signupForm.addEventListener('submit', function(e){
     )
 })
 
-header.addEventListener('click', function(e) {
+favHeader.addEventListener('click', function(e) {
     if (event.target.className == "favorites-link") {
         giftCollection.style.display = 'none';
         event.target.style.display = 'none';
@@ -90,7 +89,7 @@ header.addEventListener('click', function(e) {
 function loggedInUser(object){
     currentUser = object
     signupForm.style.display = 'none'
-    welcome.innerHTML = `<h4>Welcome back, ${currentUser.name}!</h4>`
+    welcome.innerHTML = `<h4>Hello, <i>${currentUser.email}</i> !</h4>`
     favHeader.innerHTML = `<h4 class="favorites-link">View only my Favorites</h4>`
     fetchGifts()
 }
