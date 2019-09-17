@@ -9,11 +9,12 @@ const likeButton = document.querySelector('.like-btn')
 const signupForm = document.querySelector('#signup-form')
 const signupInputs = document.querySelectorAll(".signup-input")
 const header = document.querySelector('.header-banner')
+const favHeader = document.querySelector ('.header-fav')
 let currentUser
 
 
 function putGiftsOnDom(giftArray){
-    giftCollection.innerHTML = "<h2>All Gift Ideas</h2>"
+    giftCollection.innerHTML = `<h2 class="subheader">All Gift Ideas</h2>`
     giftArray.forEach(gift => {
         giftCollection.innerHTML += `<div class="card">
           <h2>${gift.title} ($${gift.price})</h2>
@@ -26,7 +27,7 @@ function putGiftsOnDom(giftArray){
 }
 
 function putFavoritesOnDom(favArray){
-    favCollection.innerHTML = "<h2>My Favorites</h2>"
+    favCollection.innerHTML = `<h2 class="subheader">My Favorites</h2>`
     favArray.forEach(favorite => {
         favCollection.innerHTML += `<div class="card">
           <h2>${favorite.gift.title} ($${favorite.gift.price})</h2>
@@ -90,7 +91,7 @@ function loggedInUser(object){
     currentUser = object
     signupForm.style.display = 'none'
     welcome.innerHTML = `<h4>Welcome back, ${currentUser.name}!</h4>`
-    header.innerHTML = `<h4 class="favorites-link">View only my Favorites</h4>`
+    favHeader.innerHTML = `<h4 class="favorites-link">View only my Favorites</h4>`
     fetchGifts()
 }
 
