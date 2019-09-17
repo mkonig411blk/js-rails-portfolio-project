@@ -5,7 +5,11 @@ class FavoritesController < ApplicationController
 
     def create
         favorite = Favorite.new(favorite_params)
-        render json: favorite, except: [:created_at, :updated_at]
+        if favorite.save
+            render json: favorite, except: [:created_at, :updated_at]
+        else
+            render json: {message: "Favorite Failed"}
+        end
     end
 
     def index
@@ -16,7 +20,9 @@ class FavoritesController < ApplicationController
     end
 
     def destroy
-        favorite.clear
+        fav_id = params[:id]
+        favorite = Favorite.find(fav_id)
+        favorite.destroy
     end
 
 

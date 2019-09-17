@@ -4,11 +4,11 @@ const GIFTS_URL = `${BASE_URL}/gifts`
 const USERS_URL = `${BASE_URL}/users`
 const FAVORITES_URL = `${BASE_URL}/favorites`
 const giftCollection = document.querySelector('#gift-collection')
+const favCollection = document.querySelector('#fav-collection')
 const likeButton = document.querySelector('.like-btn')
 const signupForm = document.querySelector('#signup-form')
 const signupInputs = document.querySelectorAll(".signup-input")
 const header = document.querySelector('.header-banner')
-const favCollection = document.querySelector('#fav-collection')
 let currentUser
 
 
@@ -25,16 +25,12 @@ function putGiftsOnDom(giftArray){
     })
 }
 
-// only show gifts that have been favorited by this user
-// all heart buttons should be red
-// need to update ${} to reflect object structure for favorite
 function putFavoritesOnDom(favArray){
-    // favCollection is null
     favCollection.innerHTML = "<h2>My Favorites</h2>"
     favArray.forEach(favorite => {
-        giftCollection.innerHTML += `<div class="card">
+        favCollection.innerHTML += `<div class="card">
           <h2>${favorite.gift.title} ($${favorite.gift.price})</h2>
-          <h4 class="gift-cat">${gift.category}</h4>
+          <h4 class="gift-cat">${favorite.gift.category}</h4>
           <a href=${favorite.gift.link} target="_blank"><img src=${favorite.gift.image} class="gift-image" /></a>
           <p>${favorite.gift.description}<p>
           <button data-gift-id=${favorite.gift.id} class="like-btn">♡</button>
@@ -82,6 +78,14 @@ signupForm.addEventListener('submit', function(e){
     )
 })
 
+header.addEventListener('click', function(e) {
+    if (event.target.className == "favorites-link") {
+        giftCollection.style.display = 'none';
+        event.target.style.display = 'none';
+        fetchFavorites();
+    }
+})
+
 function loggedInUser(object){
     currentUser = object
     signupForm.style.display = 'none'
@@ -90,49 +94,30 @@ function loggedInUser(object){
     fetchGifts()
 }
 
-// add event listener for My favorites
-// hide gift collection
-// show favorites collection
-// fetchFavorites function
-
 giftCollection.addEventListener('click', function(e){
-    console.log(event.target.className, event.target.style.color)
+    // console.log(event.target.className, event.target.style.color)
     e.preventDefault()
-    if ((event.target.className == "like-btn") && (event.target.style.color !== '#FF0000')) {
-    let target = event.target
-    fetch(FAVORITES_URL, {
-        method: "POST",
-        headers: {
-            "Content-Type": "application/json",
-            Accept: "application/json"
-        },
-        body: JSON.stringify({
-            favorite: {
-                user_id: `${currentUser.id}`,
-                gift_id: `${event.target.dataset.giftId}`
-            }
+    if ((event.target.className == "like-btn") && (event.target.style.color !== 'red')) {
+        let target = event.target
+            fetch(FAVORITES_URL, {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json",
+                    Accept: "application/json"
+                },
+                body: JSON.stringify({
+                        user_id: `${currentUser.id}`,
+                        gift_id: `${event.target.dataset.giftId}`
+                })
         })
-    })
-    .then( res => res.json())
-    .then( res => target.dataset.favId = res.id)
-    // .then(res => res.json())
-    // .then(function(object){
-    //     console.log(object)
-    // })
-    event.target.style.color = '#FF0000';}
-    else if ((event.target.className == "like-btn") && (event.target.style.color == '#FF0000')) {
-        console.log(event.target)
-        event.target.style.color = '#000000';
-        // how do i grab the favorite_id that i want to delete?
+        .then( res => res.json())
+        .then( res => target.dataset.favId = res.id);
+        event.target.style.color = 'red';}
+    else if ((event.target.className == "like-btn") && (event.target.style.color == 'red')) {
+        event.target.style.color = 'black';
         fetch(FAVORITES_URL + '/' + event.target.dataset.favId, {
             method: "DELETE"
-            // headers: {
-            //     "Content-Type": "application/json",
-            //     Accept: "application/json"
-            // },
         })
-        .then(res => res.json())
-        .then(console.log)
     }
 })
 
