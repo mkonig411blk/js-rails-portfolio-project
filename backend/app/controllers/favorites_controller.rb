@@ -9,8 +9,10 @@ class FavoritesController < ApplicationController
     end
 
     def index
-        favorites = Favorite.all
-        render json: favorites, include: [:gift, :user]
+        user_id = params[:user_id]
+        user = User.find(user_id)
+        favorites = user.favorites
+        render json: favorites, include: [:gift]
     end
 
     def destroy
