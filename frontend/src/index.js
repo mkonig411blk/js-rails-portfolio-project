@@ -9,12 +9,13 @@ const likeButton = document.querySelector('.like-btn')
 const signupForm = document.querySelector('#signup-form')
 const signupInputs = document.querySelectorAll(".signup-input")
 const header = document.querySelector('.header-banner')
+const logout = document.querySelector('.logout')
 let currentUser
 
 
 function putGiftsOnDom(giftArray){
-    giftCollection.innerHTML = `<h4 class="favorites-link">View only my Favorites</h4>
-                                <h2 class="subheader">All Gift Ideas</h2>`
+    giftCollection.innerHTML = `<h2 class="subheader">All Gift Ideas</h2>
+                                <h4 class="favorites-link">View My Favorites ♡</h4>`
     giftArray.forEach(gift => {
         giftCollection.innerHTML += `<div class="card">
           <h2>${gift.title} ($${gift.price})</h2>
@@ -27,8 +28,8 @@ function putGiftsOnDom(giftArray){
 }
 
 function putFavoritesOnDom(favArray){
-    favCollection.innerHTML = `<h4 class="back-link">Back to all Gifts</h4>
-                               <h2 class="subheader">My Favorites</h2>`
+    favCollection.innerHTML = `<h2 class="subheader">My Favorites</h2>
+                               <h4 class="back-link">←Back to Gifts</h4>`
     favArray.forEach(favorite => {
         favCollection.innerHTML += `<div class="card">
           <h2>${favorite.gift.title} ($${favorite.gift.price})</h2>
@@ -97,7 +98,8 @@ favCollection.addEventListener('click', function(e) {
 function loggedInUser(object){
     currentUser = object
     signupForm.style.display = 'none'
-    welcome.innerHTML = `<h4>Hello, <i>${currentUser.email}</i> !</h4>`
+    welcome.innerHTML = `<h3>Hello, <i>${currentUser.email}</i> !</h3>`
+    logout.innerText = "Logout"
     fetchGifts()
 }
 
@@ -127,7 +129,3 @@ giftCollection.addEventListener('click', function(e){
         })
     }
 })
-
-
-// how do I have login option? is this necessary?
-// fetchGifts()

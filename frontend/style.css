@@ -42,13 +42,19 @@ button {
 
 header {
     background: #008080;
-    text-align: left;
     padding: 10px;
+    display: flex;
+    justify-content: space-between;
 }
 
 header h1 {
     margin: 0;
     color: white;
+}
+
+header span {
+    color: white;
+    font-size: 20px;
 }
 
 html, body {
@@ -60,12 +66,13 @@ html, body {
     margin: 0;
 }
 
-/* #signup-form {
-    padding: 10px;
-    margin: 10px;
-} */
+#signup-form  input {
+    padding: 5px;
+    margin: 5px;
+    font-size: 15px;
+}
 
-.div-underheader {
+.under-header {
     padding: 7px;
     margin: 7px;
 }
